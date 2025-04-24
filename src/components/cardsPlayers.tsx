@@ -1,5 +1,4 @@
 import Image from "next/image"
-import Link from "next/link"
 
 interface PlayerCardProps {
   name: string
@@ -13,7 +12,7 @@ export default function PlayerCard({
   imageUrl,
 }: PlayerCardProps) {
   return (
-    <Link href={`/player/${name}`} className="w-fit max-w-md hover:bg-zinc-800 transition-all duration-200 cursor-pointer bg-zinc-900 text-zinc-100 border border-zinc-700 rounded-lg shadow-md">
+    <button className="w-fit max-w-md hover:bg-zinc-800 transition-all duration-200 cursor-pointer bg-zinc-900 text-zinc-100 border border-zinc-700 rounded-lg shadow-md">
       <div className="px-4 py-2">
         <div className="flex items-center gap-2 md:gap-4">
           <div className="relative h-6 w-6 md:h-16 md:w-16 rounded-full overflow-hidden flex-shrink-0">
@@ -27,6 +26,6 @@ export default function PlayerCard({
           </div>
         </div>
       </div>
-    </Link>
+    </button>
   )
 }
