@@ -22,16 +22,16 @@ export default function Home() {
   };
 
   return (
-    <main className="h-screen p-2">
+    <main className="h-screen p-1 md:p-2">
       <div className="border h-full flex flex-col justify-center items-center border-neutral-700 rounded-xl bg-neutral-900">
-        <p className="text-4xl tracking-wide">
+        <p className="text-lg text-center md:text-justify md:text-2xl lg:text-4xl tracking-wide">
           O que você quer saber sobre o nosso TIME ?
         </p>
         <SearchComponent rows onchange={toggleText} onClick={onClick} onKeyDown={handleKeyDown}/>
-        <div className="mt-4 w-[45%]">
+        <div className="mt-4 w-[90%] lg:w-[45%]">
           <p className="text-xs text-neutral-500">Máximo de caracteres: 512</p>
         </div>
-        <div className="flex flex-wrap max-w-[45%] gap-4 mt-6">
+        <div className="flex flex-wrap h-[200px] md:h-auto w-[98%] md:max-w-[90%] lg:max-w-[45%] gap-4 mt-6 overflow-y-auto">
         {players.map(({ countryImageUrl, imageUrl, name }, index) => (
           <PlayerCard
             key={index}

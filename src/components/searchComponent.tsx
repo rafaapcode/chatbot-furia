@@ -25,7 +25,7 @@ function SearchComponent({
       className={
         className
           ? className
-          : "border border-neutral-700 rounded-2xl mt-10 w-[45%] overflow-hidden"
+          : "border border-neutral-700 rounded-2xl mt-10 w-[95%] md:w-[90%] lg:w-[45%] overflow-hidden"
       }
     >
       <textarea
@@ -34,7 +34,7 @@ function SearchComponent({
         onKeyDown={onKeyDown}
         name="search"
         id="search"
-        className="w-full py-4 pl-4 outline-none focus:outline-none resize-none rounded-2xl"
+        className="w-full py-4 pl-4 outline-none focus:outline-none resize-none rounded-2xl placeholder:text-sm md:placeholder:text-base"
         rows={rows ? 4 : undefined}
         maxLength={510}
         placeholder="Pergunte qualquer coisa sobre o time de CS da FURIA !"

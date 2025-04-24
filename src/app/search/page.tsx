@@ -71,7 +71,7 @@ export default function SearchPage() {
           {messages.map((message, i) => (
             <div
               key={i}
-              className={`mb-4 p-3 rounded-lg w-fit max-w-[80%] break-words whitespace-normal overflow-x-hidden ${
+              className={`mb-4 p-3 rounded-lg w-fit max-w-[80%] text-sm md:text-base break-words whitespace-normal overflow-x-hidden ${
                 message.isUser
                   ? "ml-auto bg-zinc-800 text-white"
                   : "bg-zinc-600 text-white"
