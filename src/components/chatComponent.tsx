@@ -6,14 +6,14 @@ interface ChatComponentProps {
   isLoading: boolean;
   messages: Message[];
   setMessages: (messages: Message) => void;
-  setIsLoading: Dispatch<SetStateAction<boolean>>; 
+  setIsLoading: Dispatch<SetStateAction<boolean>>;
 }
 
 function ChatComponent({
   isLoading,
   messages,
   setMessages,
-  setIsLoading
+  setIsLoading,
 }: ChatComponentProps) {
   const params = useSearchParams();
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -23,14 +23,18 @@ function ChatComponent({
       const query = decodeURIComponent(searchValue);
       setMessages({ content: query, isUser: true });
 
-      setIsLoading(true)
+      setIsLoading(true);
       setTimeout(() => {
-        setMessages({ content: `Pesquisando sobre: ${query}...`, isUser: false });
+        setMessages({
+          content: `Pesquisando sobre: ${query}...`,
+          isUser: false,
+        });
         setIsLoading(false);
       }, 5000);
     }
   }, [params]);
 
+  
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, isLoading]);
@@ -45,9 +49,8 @@ function ChatComponent({
               ? "ml-auto bg-zinc-800 text-white"
               : "bg-zinc-600 text-white"
           }`}
-        >
-          {message.content}
-        </div>
+          dangerouslySetInnerHTML={{ __html: message.content }}
+        />
       ))}
       {isLoading && (
         <div className="bg-neutral-800 text-white p-3 rounded-lg w-fit max-w-[80%] break-words whitespace-normal overflow-x-hidden animate-pulse">

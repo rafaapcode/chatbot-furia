@@ -1,15 +1,13 @@
 "use client";
 
+import { getChatCompletion } from "@/actions/getPerplexityResonse";
 import ChatComponent from "@/components/chatComponent";
 import SearchComponent from "@/components/searchComponent";
 import { Message } from "@/types";
+import { toHtml } from "@/utils/toHtml";
 import { ChevronLeft } from "lucide-react";
 import { useRouter } from "next/navigation";
-import {
-  ChangeEvent,
-  Suspense,
-  useState
-} from "react";
+import { ChangeEvent, Suspense, useState } from "react";
 
 export default function SearchPage() {
   const [messages, setMessages] = useState<Message[]>([]);
@@ -19,22 +17,43 @@ export default function SearchPage() {
   const router = useRouter();
 
   const handleSubmit = async () => {
-    if (!input.trim()) return;
+    try {
+      if (!input.trim()) return;
 
-    const userMessage: Message = { content: input, isUser: true };
-    setMessages((prev) => [...prev, userMessage]);
-    setInput("");
-    setIsLoading(true);
+      const userMessage: Message = { content: input, isUser: true };
+      setMessages((prev) => [...prev, userMessage]);
+      setInput("");
+      setIsLoading(true);
 
+      const res = await getChatCompletion(userMessage.content);
 
-    setTimeout(() => {
-      const botResponse: Message = {
-        content: `Resposta para: ${input}`,
-        isUser: false,
-      };
-      setMessages((prev) => [...prev, botResponse]);
+      if (res.error.isError) {
+        setMessages((prev) => [
+          ...prev,
+          {
+            isUser: false,
+            content:
+              res.error.message ||
+              "Estamos enfrentando problemas e não conseguimos encontrar uma resposta para a sua pergunta, tente novamente mais tarde.",
+          },
+        ]);
+      } else {
+        if (res.data) {
+          const getHtmlString = await toHtml(res.data?.choices[0].message.content);
+          setMessages((prev) => [
+            ...prev,
+            {
+              isUser: false,
+              content: getHtmlString 
+            },
+          ]);
+        }
+      }
+    } catch (error: any) {
+      console.log(error);
+    } finally {
       setIsLoading(false);
-    }, 1000);
+    }
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -46,7 +65,8 @@ export default function SearchPage() {
 
   const onClick = () => router.push("/");
 
-  const handleMessages = (message: Message) => setMessages(prev => [...prev, message]);
+  const handleMessages = (message: Message) =>
+    setMessages((prev) => [...prev, message]);
 
   return (
     <main className="h-screen p-2">

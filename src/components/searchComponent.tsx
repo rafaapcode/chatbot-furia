@@ -29,6 +29,7 @@ function SearchComponent({
       }
     >
       <textarea
+        disabled={isLoading}
         value={value}
         onChange={onchange}
         onKeyDown={onKeyDown}
