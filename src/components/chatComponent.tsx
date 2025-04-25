@@ -49,8 +49,9 @@ function ChatComponent({
               ? "ml-auto bg-zinc-800 text-white"
               : "bg-zinc-600 text-white"
           }`}
-          dangerouslySetInnerHTML={{ __html: message.content }}
-        />
+        >
+          <div dangerouslySetInnerHTML={{ __html: message.content }} />
+        </div>
       ))}
       {isLoading && (
         <div className="bg-neutral-800 text-white p-3 rounded-lg w-fit max-w-[80%] break-words whitespace-normal overflow-x-hidden animate-pulse">
