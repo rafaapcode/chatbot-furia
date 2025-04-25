@@ -29,7 +29,7 @@ export const getChatCompletion = async (content: string): Promise<ResponseApi> =
       web_search_options: { search_context_size: "medium" },
       model: "sonar",
       messages: [
-        { role: "system", content: "Be precise and concise." },
+        { role: "system", content: "Forneça um resposta limpa e direta, sem incluir nenhuma citação as fontes de dados que foram buscadas." },
         { role: "user", content },
       ],
     };
@@ -60,7 +60,7 @@ export const getChatCompletion = async (content: string): Promise<ResponseApi> =
     }
 
     const response = await res.json();
-
+    
     return {
       error: { isError: false },
       data: response as ApiFormatResponse,
