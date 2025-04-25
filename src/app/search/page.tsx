@@ -4,7 +4,6 @@ import { getChatCompletion } from "@/actions/getPerplexityResonse";
 import ChatComponent from "@/components/chatComponent";
 import SearchComponent from "@/components/searchComponent";
 import { Message } from "@/types";
-import { toHtml } from "@/utils/toHtml";
 import { ChevronLeft } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { ChangeEvent, Suspense, useState } from "react";
@@ -15,6 +14,9 @@ export default function SearchPage() {
   const [isLoading, setIsLoading] = useState(false);
 
   const router = useRouter();
+
+  const handleMessages = (message: Message) =>
+    setMessages((prev) => [...prev, message]);
 
   const handleSubmit = async () => {
     try {
@@ -28,29 +30,36 @@ export default function SearchPage() {
       const res = await getChatCompletion(userMessage.content);
 
       if (res.error.isError) {
-        setMessages((prev) => [
-          ...prev,
-          {
+        handleMessages({
+          isUser: false,
+          content:
+            res.error.message ||
+            "Estamos enfrentando problemas e não conseguimos encontrar uma resposta para a sua pergunta, tente novamente mais tarde.",
+        });
+      } else {
+        if (res.data) {
+          const markdown = res.data?.choices[0].message.content;
+          handleMessages({
+            isUser: false,
+            content: markdown,
+          });
+          
+        } else {
+          handleMessages({
             isUser: false,
             content:
               res.error.message ||
               "Estamos enfrentando problemas e não conseguimos encontrar uma resposta para a sua pergunta, tente novamente mais tarde.",
-          },
-        ]);
-      } else {
-        if (res.data) {
-          const getHtmlString = await toHtml(res.data?.choices[0].message.content);
-          setMessages((prev) => [
-            ...prev,
-            {
-              isUser: false,
-              content: getHtmlString 
-            },
-          ]);
+          });
         }
       }
     } catch (error: any) {
       console.log(error);
+      handleMessages({
+        isUser: false,
+        content:
+          "Estamos enfrentando problemas e não conseguimos encontrar uma resposta para a sua pergunta, tente novamente mais tarde.",
+      });
     } finally {
       setIsLoading(false);
     }
@@ -64,9 +73,6 @@ export default function SearchPage() {
   };
 
   const onClick = () => router.push("/");
-
-  const handleMessages = (message: Message) =>
-    setMessages((prev) => [...prev, message]);
 
   return (
     <main className="h-screen p-2">
@@ -88,6 +94,7 @@ export default function SearchPage() {
 
         <div className="w-full py-2">
           <SearchComponent
+            isLoading={isLoading}
             rows={false}
             value={input}
             className="w-[90%] border border-zinc-800 rounded-2xl mx-auto"

@@ -1,6 +1,8 @@
 import { Message } from "@/types";
 import { useSearchParams } from "next/navigation";
 import { Dispatch, SetStateAction, useEffect, useRef } from "react";
+import Markdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 
 interface ChatComponentProps {
   isLoading: boolean;
@@ -17,6 +19,7 @@ function ChatComponent({
 }: ChatComponentProps) {
   const params = useSearchParams();
   const messagesEndRef = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
     const searchValue = params.get("search");
     if (searchValue) {
@@ -44,17 +47,17 @@ function ChatComponent({
       {messages.map((message, i) => (
         <div
           key={i}
-          className={`mb-4 p-3 rounded-lg w-fit max-w-1/2 text-sm md:text-base break-words whitespace-normal overflow-x-hidden ${
+          className={`mb-4 py-3 px-6 w-fit max-w-1/2 text-sm md:text-base break-words whitespace-normal overflow-x-hidden leading-8 ${
             message.isUser
-              ? "ml-auto bg-zinc-800 text-white"
-              : "bg-zinc-600 text-white"
+              ? "ml-auto bg-zinc-800 text-white rounded-full"
+              : "text-white"
           }`}
         >
-          <div dangerouslySetInnerHTML={{ __html: message.content }} />
+          <Markdown remarkPlugins={[remarkGfm]}>{message.content}</Markdown>
         </div>
       ))}
       {isLoading && (
-        <div className="bg-neutral-800 text-white p-3 rounded-lg w-fit max-w-[80%] break-words whitespace-normal overflow-x-hidden animate-pulse">
+        <div className="text-neutral-700 px-6 rounded-lg w-fit max-w-[80%] break-words whitespace-normal overflow-x-hidden animate-pulse">
           Pensando...
         </div>
       )}
