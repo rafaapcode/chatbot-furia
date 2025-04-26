@@ -72,11 +72,11 @@ function ChatComponent({
   }, [messages, isLoading]);
 
   return (
-    <div className="flex-1 overflow-y-auto p-4 w-[90%] mx-auto">
+    <div className="flex-1 overflow-y-auto p-4 md:w-[90%] mx-auto">
       {messages.map((message, i) => (
         <div
           key={i}
-          className={`mb-4 py-3 px-6 w-fit max-w-1/2 text-sm md:text-base break-words whitespace-normal overflow-x-hidden leading-8 ${
+          className={`mb-4 py-3 px-6 w-fit max-w-[98%] md:max-w-1/2 text-sm md:text-base break-words whitespace-normal overflow-x-hidden leading-8 ${
             message.isUser
               ? "ml-auto bg-zinc-800 text-white rounded-full"
               : "text-white"
