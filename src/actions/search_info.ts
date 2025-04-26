@@ -6,17 +6,10 @@ import { ApiFormatResponse } from "@/types";
 
 interface ResponseApi {
   error: { isError: boolean; message?: string };
-  data: null | ApiFormatResponse;
+  data: null | string;
 }
 
-// function toPerplexity(messages: Message[]): ApiFormat[] {
-//   return messages.map((msg) => ({
-//     role: 'user',
-//     content: msg.content
-//   }))
-// }
-
-export const getChatCompletion = async (content: string): Promise<ResponseApi> => {
+const search_info = async (content: string): Promise<ResponseApi> => {
   try {
     const body = {
       temperature: 0.2,
@@ -61,13 +54,15 @@ export const getChatCompletion = async (content: string): Promise<ResponseApi> =
     }
 
     const response = await res.json();
-    
+    const formattedRes = response as Pick<ApiFormatResponse, "choices">
     return {
       error: { isError: false },
-      data: response as ApiFormatResponse,
+      data: formattedRes.choices[0].message.content,
     };
   } catch (error: any) {
-    console.log(error);
+    console.log(error.message);
     throw new Error('error');
   }
 };
+
+export default search_info;

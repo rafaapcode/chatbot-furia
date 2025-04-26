@@ -1,4 +1,5 @@
-import { getChatCompletion } from "@/actions/getPerplexityResonse";
+import getChatCompletion from "@/actions/openAi";
+import { messagePromptError } from "@/constants";
 import { Message } from "@/types";
 import { useSearchParams } from "next/navigation";
 import { Dispatch, SetStateAction, useEffect, useRef } from "react";
@@ -35,20 +36,20 @@ function ChatComponent({
               isUser: false,
               content:
                 res.error.message ||
-                "Estamos enfrentando problemas e não conseguimos encontrar uma resposta para a sua pergunta, tente novamente mais tarde.",
+                messagePromptError,
             });
           } else {
             if (res.data) {
               setMessages({
                 isUser: false,
-                content: res.data.choices[0].message.content,
+                content: res.data,
               });
             } else {
               setMessages({
                 isUser: false,
                 content:
                   res.error.message ||
-                  "Estamos enfrentando problemas e não conseguimos encontrar uma resposta para a sua pergunta, tente novamente mais tarde.",
+                  messagePromptError,
               });
             }
           }
@@ -58,7 +59,7 @@ function ChatComponent({
             isUser: false,
             content:
               err.message ||
-              "Estamos enfrentando problemas e não conseguimos encontrar uma resposta para a sua pergunta, tente novamente mais tarde.",
+              messagePromptError
           })
         )
         .finally(() => setIsLoading(false));

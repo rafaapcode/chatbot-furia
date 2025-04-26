@@ -1,8 +1,9 @@
 "use client";
 
-import { getChatCompletion } from "@/actions/getPerplexityResonse";
+import getChatCompletion from "@/actions/openAi";
 import ChatComponent from "@/components/chatComponent";
 import SearchComponent from "@/components/searchComponent";
+import { messagePromptError } from "@/constants";
 import { Message } from "@/types";
 import { ChevronLeft } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -34,11 +35,11 @@ export default function SearchPage() {
           isUser: false,
           content:
             res.error.message ||
-            "Estamos enfrentando problemas e não conseguimos encontrar uma resposta para a sua pergunta, tente novamente mais tarde.",
+            messagePromptError,
         });
       } else {
         if (res.data) {
-          const markdown = res.data?.choices[0].message.content;
+          const markdown = res.data;
           handleMessages({
             isUser: false,
             content: markdown,
@@ -49,7 +50,7 @@ export default function SearchPage() {
             isUser: false,
             content:
               res.error.message ||
-              "Estamos enfrentando problemas e não conseguimos encontrar uma resposta para a sua pergunta, tente novamente mais tarde.",
+              messagePromptError,
           });
         }
       }
@@ -58,7 +59,7 @@ export default function SearchPage() {
       handleMessages({
         isUser: false,
         content:
-          "Estamos enfrentando problemas e não conseguimos encontrar uma resposta para a sua pergunta, tente novamente mais tarde.",
+          messagePromptError,
       });
     } finally {
       setIsLoading(false);
