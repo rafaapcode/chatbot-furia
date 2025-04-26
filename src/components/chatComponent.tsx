@@ -29,7 +29,7 @@ function ChatComponent({
       setMessages({ content: query, isUser: true });
 
       setIsLoading(true);
-      getChatCompletion(messages)
+      getChatCompletion([...messages, { content: query, isUser: true }])
         .then((res) => {
           if (res.error.isError) {
             setMessages({
