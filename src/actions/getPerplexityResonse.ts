@@ -1,5 +1,6 @@
 "use server";
 
+import { promptSystem } from "@/constants";
 import { ApiFormatResponse } from "@/types";
 
 
@@ -29,7 +30,7 @@ export const getChatCompletion = async (content: string): Promise<ResponseApi> =
       web_search_options: { search_context_size: "medium" },
       model: "sonar",
       messages: [
-        { role: "system", content: "Forneça um resposta limpa e direta, sem incluir nenhuma citação as fontes de dados que foram buscadas." },
+        { role: "system", content: promptSystem },
         { role: "user", content },
       ],
     };
@@ -45,7 +46,7 @@ export const getChatCompletion = async (content: string): Promise<ResponseApi> =
     };
 
     const res = await fetch(
-      "https://api.perplexity.ai/chat/completions",
+      process.env.BASE_URL as string,
       options
     );
 

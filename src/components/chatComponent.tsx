@@ -1,3 +1,4 @@
+import { getChatCompletion } from "@/actions/getPerplexityResonse";
 import { Message } from "@/types";
 import { useSearchParams } from "next/navigation";
 import { Dispatch, SetStateAction, useEffect, useRef } from "react";
@@ -27,13 +28,40 @@ function ChatComponent({
       setMessages({ content: query, isUser: true });
 
       setIsLoading(true);
-      setTimeout(() => {
-        setMessages({
-          content: `Pesquisando sobre: ${query}...`,
-          isUser: false,
-        });
-        setIsLoading(false);
-      }, 5000);
+      getChatCompletion(query)
+        .then((res) => {
+          if (res.error.isError) {
+            setMessages({
+              isUser: false,
+              content:
+                res.error.message ||
+                "Estamos enfrentando problemas e não conseguimos encontrar uma resposta para a sua pergunta, tente novamente mais tarde.",
+            });
+          } else {
+            if (res.data) {
+              setMessages({
+                isUser: false,
+                content: res.data.choices[0].message.content,
+              });
+            } else {
+              setMessages({
+                isUser: false,
+                content:
+                  res.error.message ||
+                  "Estamos enfrentando problemas e não conseguimos encontrar uma resposta para a sua pergunta, tente novamente mais tarde.",
+              });
+            }
+          }
+        })
+        .catch((err) =>
+          setMessages({
+            isUser: false,
+            content:
+              err.message ||
+              "Estamos enfrentando problemas e não conseguimos encontrar uma resposta para a sua pergunta, tente novamente mais tarde.",
+          })
+        )
+        .finally(() => setIsLoading(false));
     }
   }, [params]);
 

@@ -72,12 +72,12 @@ export default function SearchPage() {
     }
   };
 
-  const onClick = () => router.push("/");
+  const goHome = () => router.push("/");
 
   return (
     <main className="h-screen p-2">
       <button
-        onClick={onClick}
+        onClick={goHome}
         className="bg-neutral-800 p-1 mb-2 rounded-lg hover:bg-neutral-700 transition-all duration-200"
       >
         <ChevronLeft size={16} />
