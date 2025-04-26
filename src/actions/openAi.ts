@@ -1,5 +1,6 @@
 "use server";
 import { messagePromptError, promptFan } from "@/constants";
+import { Message } from "@/types";
 import { OpenAI } from "openai";
 import {
   ResponseFunctionToolCall,
@@ -37,24 +38,27 @@ const tools: Tool[] = [
   },
 ];
 
-const getChatCompletion = async (content: string): Promise<ResponseApi> => {
+function toChat(msgs: Message[]): ResponseInput {
+  return msgs.map(msg => ({
+    role: msg.isUser ? 'user' : 'assistant',
+    content: msg.content
+  }))
+}
+
+const getChatCompletion = async (content: Message[]): Promise<ResponseApi> => {
   try {
     const input: ResponseInput = [
       {
         role: "developer",
         content: promptFan,
       },
-      {
-        role: "user",
-        content,
-      },
+      ...toChat(content)
     ];
     const response = await openai.responses.create({
       model: "o4-mini-2025-04-16",
       input,
       tools: tools,
     });
-
 
     const isFnCall = response.output[1].type === "function_call";
 

@@ -24,11 +24,10 @@ export default function SearchPage() {
       if (!input.trim()) return;
 
       const userMessage: Message = { content: input, isUser: true };
-      setMessages((prev) => [...prev, userMessage]);
       setInput("");
       setIsLoading(true);
-
-      const res = await getChatCompletion(userMessage.content);
+      setMessages((prev) => [...prev, userMessage]);
+      const res = await getChatCompletion([...messages, userMessage]);
 
       if (res.error.isError) {
         handleMessages({
