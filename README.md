@@ -27,8 +27,7 @@ O projeto está disponível publicamente em produção:
 ## 📷 Visão Geral
 
 
-O **ChatBot** se comunica diretamente com a **API da OpenAI** para gerar respostas.  
-Quando necessário ela usa um tool que utiliza a integração com a **API do Perplexity** para trazer informações recentes da web.
+O **ChatBot** se comunica diretamente com a **API da OpenAI** para gerar respostas. Quando necessário ela usa uma tool que utiliza a integração com a **API do Perplexity** para trazer informações recentes da web.
 
 ---
 
@@ -39,7 +38,7 @@ Quando necessário ela usa um tool que utiliza a integração com a **API do Per
 Clone o repositório do projeto utilizando o comando abaixo:
 
 ```bash
-git clone https://github.com/seu-usuario/webchat-furia.git
+git clone https://github.com/rafaapcode/chatbot-furia.git
 ```
 
 ### 2. Acessar o Diretório do Projeto
@@ -47,7 +46,7 @@ git clone https://github.com/seu-usuario/webchat-furia.git
 Após clonar, entre na pasta do projeto:
 
 ```bash
-cd webchat-furia
+cd chatbot-furia
 ```
 
 ### 3. Instalar as Dependências
@@ -67,7 +66,7 @@ Crie um arquivo ```.env```  na raiz do projeto e adicione as seguintes variávei
 ```bash
 PERPLEXITY_TOKEN=your_perplexity_token_here
 OPEN_AI_API_KEY=your_openai_api_key_here
-BASE_URL=https://api.openai.com/v1
+BASE_URL=PERPLEXTITY_API_URL
 ```
 
 ### 5. Iniciar o Servidor de Desenvolvimento
