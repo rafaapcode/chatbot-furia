@@ -29,6 +29,7 @@ O projeto está disponível publicamente em produção:
 
 O **ChatBot** se comunica diretamente com a **API da OpenAI** para gerar respostas. Quando necessário ela usa uma tool que utiliza a integração com a **API do Perplexity** para trazer informações recentes da web.
 
+![alt text](image.png)
 ---
 
 ## 🚀 Como Rodar o Projeto Localmente
